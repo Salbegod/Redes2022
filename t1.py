@@ -55,12 +55,40 @@ def MDIFDecoder(encodedString):
             skip = True
     return f'{int(result, 2):X}'
 
+def HDB3Encoder(hexValue):
+    binary = bin(int('1'+hexValue,16))[3:]
+    result = ""
+    signal = "-"
+    numberOnes = 0
+    numberZeroes = 0
+    for bit in binary:
+        if bit == '1':
+            if numberZeroes > 0 and numberZeroes < 4:
+                result += (numberZeroes*"0")
+                numberZeroes = 0
+            numberOnes += 1
+            result += invert(signal)
+            signal = invert(signal)
+        else:
+            numberZeroes += 1
+            if numberZeroes == 4:
+                numberZeroes = 0
+                if numberOnes%2 == 0:
+                    result += (invert(signal) + "00" + invert(signal))
+                else:
+                    result += ("000" + signal)
+    if numberZeroes != 0:
+        result += (numberZeroes*"0")
+    return result
+
 def main():
     if sys.argv[1] == "codificador":
         if sys.argv[2] == "nrzi":
             print(NRZIEncoder(sys.argv[3]))
         elif sys.argv[2] == "mdif":
             print(MDIFEncoder(sys.argv[3]))
+        elif sys.argv[2] == "hdb3":
+            print(HDB3Encoder(sys.argv[3]))
     elif sys.argv[1] == "decodificador":
         if sys.argv[2] == "nrzi":
             print(NRZIDecoder(sys.argv[3]))
