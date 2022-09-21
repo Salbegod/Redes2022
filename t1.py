@@ -4,6 +4,8 @@ def invert(signal):
         return "-"
     if signal == "-": 
         return "+"
+    if signal == "0":
+        return "0"
 
 def NRZIEncoder(hexValue):
     binary = bin(int('1'+hexValue,16))[3:]
@@ -81,6 +83,20 @@ def HDB3Encoder(hexValue):
         result += (numberZeroes*"0")
     return result
 
+def HDB3Decoder(encodedString):
+    result = ""
+    current = "-"
+    for signal in encodedString:
+        if signal == "0":
+            result += '0'
+        if signal == invert(current):
+            current = invert(current)
+            result += '1'
+        elif signal == current:
+            current = invert(current)
+            result = result[:4] + "0000"
+    return f'{int(result, 2):X}'
+
 def main():
     if sys.argv[1] == "codificador":
         if sys.argv[2] == "nrzi":
@@ -94,5 +110,7 @@ def main():
             print(NRZIDecoder(sys.argv[3]))
         elif sys.argv[2] == "mdif":
             print(MDIFDecoder(sys.argv[3]))
+        elif sys.argv[2] == "hdb3":
+            print(HDB3Decoder(sys.argv[3]))
 
 main()
