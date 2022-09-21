@@ -1,3 +1,4 @@
+## FUNDAMENTOS DE REDES - TRABALHO 1 2022/2 - LUCAS PEREIRA SALBEGO (17202261-8)
 import sys
 def invert(signal):
     if signal == "+":
