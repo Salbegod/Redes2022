@@ -1,4 +1,4 @@
-
+import sys
 def invert(signal):
     if signal == "+":
         return "-"
@@ -54,3 +54,17 @@ def MDIFDecoder(encodedString):
             result += '1'
             skip = True
     return f'{int(result, 2):X}'
+
+def main():
+    if sys.argv[1] == "codificador":
+        if sys.argv[2] == "nrzi":
+            print(NRZIEncoder(sys.argv[3]))
+        elif sys.argv[2] == "mdif":
+            print(MDIFEncoder(sys.argv[3]))
+    elif sys.argv[1] == "decodificador":
+        if sys.argv[2] == "nrzi":
+            print(NRZIDecoder(sys.argv[3]))
+        elif sys.argv[2] == "mdif":
+            print(MDIFDecoder(sys.argv[3]))
+
+main()
